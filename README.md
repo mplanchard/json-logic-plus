@@ -1,8 +1,47 @@
-# json-logic-rs
+# json-logic-plus
 
-![Continuous Integration](https://github.com/Bestowinc/json-logic-rs/workflows/Continuous%20Integration/badge.svg?branch=master)
+**WIP**
 
-This is an implementation of  the [JsonLogic] specification in Rust.
+JsonLogic Plus is an expansion to the [jsonlogic] standard to include a number
+of quality of life improvements. These include:
+
+- [ ] Comparison Functions not based on Javascript operators (i.e. that are
+      typesafe and do not perform any implicit type conversion)
+  - [ ] `eq`
+  - [ ] `ne`
+  - [ ] `gt`
+  - [ ] `lt`
+  - [ ] `gte`
+  - [ ] `lte`
+- [ ] Arithmetic operators that avoid implicit type conversion:
+  - [ ] `add`
+  - [ ] `sub`
+  - [ ] `mul`
+  - [ ] `div`
+  - [ ] `mod`
+- [ ] Defining custom functions that are made available during execution of
+      jsonlogic (note the existing jsonlogic JS implementation allows you to do this
+      manually, but it is not part of the standard and is not implemented in a
+      cross-language way).
+- [ ] Defining constants that are made available during execution of jsonlogic
+- [ ] New Operators
+  - [ ] `let` for defining local variables for a subsequent expression
+  - [ ] casting operators to explicitly convert between types
+  - [ ] `now`, `nowIso`, and `nowMillis` for returning the current datetime in
+        seconds since the epoch, ISO string format, and milliseconds since the
+        epoch, respectively
+  - [ ] `daysBetween`, `hoursBetween`, `minutesBetween`, `secondsBetween`, and
+        `millisBetween` to get the amount of time between two date[time]-like
+        objects (timestamps or ISO strings)
+  - [ ] `daysSince`, `hoursSince`, `minutesSince`, `secondsSince`, and
+        `millisSince` for determining the amount of time since some
+        date[time]-like objects (timestamps or ISO strings).
+  - [ ] `slice` to provide slicing operations on arrays and strings
+  - [ ] `join` to join an array into a string with a joining character
+- And more!
+
+JsonLogic Plus will always continue to implement the full suite of fully
+complaint JsonLogic functions, to make migrating a breeze.
 
 ## Project Status
 
@@ -19,72 +58,19 @@ as the ability to define functions as JsonLogic. We will communicate with
 the broader JsonLogic community to see if we can make them part of the
 standard as we do so.
 
-Being built in Rust, we are able to provide the package in a variety of
-languages. The table below describes current language support:
-
-| **Language**         | **Available Via**                                                          |
-| -------------------- | -------------------------------------------------------------------------- |
-| Rust                 | [Cargo](https://crates.io/crates/jsonlogic-rs)                             |
-| JavaScript (as WASM) | Node Package via [NPM](https://www.npmjs.com/package/@bestow/jsonlogic-rs) |
-| Python               | [PyPI](https://test.pypi.org/project/jsonlogic-rs/0.1.0/)                  |
-
-## Installation
-
-### Rust
-
-To use as a Rust library, add to your `Cargo.toml`:
-
-``` toml
-[dependencies]
-jsonlogic-rs = "~0.1"
-```
-
-If you just want to use the commandline `jsonlogic` binary:
-
-``` sh
-cargo install jsonlogic-rs --features cmdline
-```
-
-### Node/Browser
-
-You can install JsonLogic using npm or yarn. In NPM:
-
-``` sh
-npm install --save @bestow/jsonlogic-rs
-```
-
-Note that the package is distributed as a node package, so you'll need to use
-`browserify`, `webpack`, or similar to install for the browser.
-
-### Python
-
-Supports Python 3.6+.
-
-Wheels are distributed for many platforms, so you can often just run:
-
-``` sh
-pip install jsonlogic-rs
-```
-
-If a wheel does _not_ exist for your system, this will attempt to build the
-package. In order for the package to build successfully, you MUST have Rust
-installed on your local system, and `cargo` MUST be present in your `PATH`.
-
-See [Building](#Building) below for more details.
-
 ## Usage
 
 ### Rust
 
 ```rust
-use jsonlogic_rs;
+use jsonlogic_plus;
 use serde_json::{json, from_str, Value};
 
 // You can pass JSON values deserialized with serde straight into apply().
 fn main() {
     let data: Value = from_str(r#"{"a": 7}"#)
     assert_eq!(
-        jsonlogic_rs::apply(
+        jsonlogic_plus::apply(
             json!({"===": [{"var": "a"}, 7]}),
             data,
         ),
@@ -96,20 +82,17 @@ fn main() {
 ### Javascript
 
 ```js
-const jsonlogic = require("jsonlogic-rs")
+const jsonlogic = require("jsonlogic-plus");
 
-jsonlogic.apply(
-    {"===": [{"var": "a"}, 7]},
-    {"a": 7}
-)
+jsonlogic.apply({ "===": [{ var: "a" }, 7] }, { a: 7 });
 ```
 
 ### Python
 
 ```py
-import jsonlogic_rs
+import jsonlogic_plus
 
-res = jsonlogic_rs.apply(
+res = jsonlogic_plus.apply(
     {"===": [{"var": "a"}, 7]},
     {"a": 7}
 )
@@ -118,7 +101,7 @@ assert res == True
 
 # If You have serialized JsonLogic and data, the `apply_serialized` method can
 # be used instead
-res = jsonlogic_rs.apply_serialized(
+res = jsonlogic_plus.apply_serialized(
     '{"===": [{"var": "a"}, 7]}',
     '{"a": 7}'
 )
@@ -126,7 +109,7 @@ res = jsonlogic_rs.apply_serialized(
 
 ### Commandline
 
-``` raw
+```raw
 Parse JSON data with a JsonLogic rule.
 
 When no <data> or <data> is -, read from stdin.
@@ -157,7 +140,7 @@ Run `jsonlogic --help` the most up-to-date usage.
 
 An example of chaining multiple results:
 
-``` sh
+```sh
 $ echo '{"a": "a"}' \
     | jsonlogic '{"if": [{"===": [{"var": "a"}, "a"]}, {"result": true}, {"result": false}]}' \
     | jsonlogic '{"if": [{"!!": {"var": "result"}}, "result was true", "result was false"]}'
@@ -167,7 +150,7 @@ $ echo '{"a": "a"}' \
 
 Using `jsonlogic` on the cmdline to explore an API:
 
-``` sh
+```sh
 > curl -s "https://catfact.ninja/facts?limit=5"
 
 {"current_page":1,"data":[{"fact":"The Egyptian Mau is probably the oldest breed of cat. In fact, the breed is so ancient that its name is the Egyptian word for \u201ccat.\u201d","length":132},{"fact":"Julius Ceasar, Henri II, Charles XI, and Napoleon were all afraid of cats.","length":74},{"fact":"Unlike humans, cats cannot detect sweetness which likely explains why they are not drawn to it at all.","length":102},{"fact":"Cats can be taught to walk on a leash, but a lot of time and patience is required to teach them. The younger the cat is, the easier it will be for them to learn.","length":161},{"fact":"Researchers believe the word \u201ctabby\u201d comes from Attabiyah, a neighborhood in Baghdad, Iraq. Tabbies got their name because their striped coats resembled the famous wavy patterns in the silk produced in this city.","length":212}],"first_page_url":"https:\/\/catfact.ninja\/facts?page=1","from":1,"last_page":67,"last_page_url":"https:\/\/catfact.ninja\/facts?page=67","next_page_url":"https:\/\/catfact.ninja\/facts?page=2","path":"https:\/\/catfact.ninja\/facts","per_page":"5","prev_page_url":null,"to":5,"total":332}
@@ -252,7 +235,7 @@ make develop-py
 ```
 
 This will automatically create a virtual environment in `venv/`, install
-the necessary packages, and then install `jsonlogic_rs` into that environment.
+the necessary packages, and then install `jsonlogic_plus` into that environment.
 
 **Note:** from our CI experiences, this may not work for Python 3.8 on Windows.
 If you are running this on a Windows machine and can confirm whether or not
@@ -272,7 +255,7 @@ make build-py-wheel
 ```
 
 The python distribution consists both of the C extension generated from the
-Rust and a thin wrapper found in `py/jsonlogic_rs/`. `make develop-py` will
+Rust and a thin wrapper found in `py/jsonlogic_plus/`. `make develop-py` will
 compile the C extension and place it in that directory, where it will be
 importable by your local venv. When building wheels, the wrapper and the C
 extension are all packaged together into the resultant wheel, which will
