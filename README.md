@@ -189,6 +189,7 @@ Using `jsonlogic` on the cmdline to explore an API:
 
 true
 
+# Note that '{"var": ""}' is the entirety of whatever data was emitted by the previous step
 > curl -s "https://catfact.ninja/facts?limit=5" \
     | jsonlogic '{"var": "data.0.fact"}' \
     | jsonlogic '{"in": ["cat", {"var": ""}]}' \
@@ -200,6 +201,15 @@ true
 ## Building
 
 ### Prerequisites
+
+#### Automated Setup
+
+Install `nix` and `direnv`. If you use an editor, install a `direnv` plugin. Run
+`nix-shell` to open a shell with all prerequisites installed. Your editor plugin
+should make those prerequisites available via `direnv` in your project
+environment.
+
+#### Manual Setup
 
 You must have Rust installed and `cargo` available in your `PATH`.
 
