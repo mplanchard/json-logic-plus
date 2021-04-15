@@ -9,12 +9,13 @@ import { apply } from "../js/index.js";
 const load_test_json = () => {
   let data_file = join(
     // import.meta.url will be something like file:<absolute_path>
-    dirname(import.meta.url).split(":")[1],
+    dirname(import.meta.url)
+      .split(":")
+      .slice(1)
+      .join(""),
     "data",
     "tests.json"
   );
-  console.log(import.meta.url);
-  console.log(data_file);
   let data = readFileSync(data_file);
   return JSON.parse(data);
 };
