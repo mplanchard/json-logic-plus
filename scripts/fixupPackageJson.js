@@ -4,7 +4,7 @@ const { readFileSync, writeFileSync } = require("fs");
 const { join } = require("path");
 
 const main = () => {
-  const file_path = join(__dirname, "../js/package.json");
+  const file_path = join(__dirname, "..", "js", "package.json");
   package_data = JSON.parse(readFileSync(file_path));
   if (!package_data.files.includes("index_bg.js")) {
     package_data.files = [...package_data.files, "index_bg.js"];
