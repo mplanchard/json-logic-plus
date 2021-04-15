@@ -6,7 +6,7 @@ use clap::{App, Arg};
 use serde_json;
 use serde_json::Value;
 
-use jsonlogic_rs;
+use jsonlogic_plus;
 
 fn configure_args<'a, 'b>(app: App<'a, 'b>) -> App<'a, 'b> {
     app.version(env!("CARGO_PKG_VERSION"))
@@ -64,7 +64,7 @@ fn main() -> Result<()> {
     let json_data: Value =
         serde_json::from_str(&data).context("Could not parse data as JSON")?;
 
-    let result = jsonlogic_rs::apply(&json_logic, &json_data)
+    let result = jsonlogic_plus::apply(&json_logic, &json_data)
         .context("Could not execute logic")?;
 
     println!("{}", result.to_string());

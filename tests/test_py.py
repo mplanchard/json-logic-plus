@@ -4,7 +4,7 @@ import json
 import typing as t
 from pathlib import Path
 
-import jsonlogic_rs
+import jsonlogic_plus
 
 
 TEST_FILE = Path(__file__).parent / "data/tests.json"
@@ -30,7 +30,7 @@ def load_tests() -> t.List[TestCase]:
 def run_tests() -> None:
     """Run through the tests and assert we get the right output."""
     for idx, case in enumerate(load_tests()):
-        result = jsonlogic_rs.apply(case.logic, case.data)
+        result = jsonlogic_plus.apply(case.logic, case.data)
         assert result == case.exp, f"Failed test case {idx}: {case}"
 
 

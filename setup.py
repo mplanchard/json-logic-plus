@@ -21,6 +21,7 @@ def generate_lockfile():
         raise RuntimeError(f"Could not generate Cargo lockfile: {err}")
     return
 
+
 def get_version():
     generate_lockfile()
     proc = Popen(("cargo", "pkgid"), stdout=PIPE, stderr=PIPE)
@@ -55,7 +56,7 @@ setup(
         # 'Development Status :: 2 - Pre-Alpha',
         # "Development Status :: 3 - Alpha",
         # "Development Status :: 4 - Beta",
-        'Development Status :: 5 - Production/Stable',
+        "Development Status :: 5 - Production/Stable",
         # 'Development Status :: 6 - Mature',
         # 'Framework :: AsyncIO',
         # 'Framework :: Flask',
@@ -86,13 +87,13 @@ setup(
         RustExtension(
             # Python package name before the dot, name of C extension to
             # stick inside of it after the dot.
-            "jsonlogic_rs.jsonlogic",
+            "jsonlogic_plus.jsonlogic",
             "Cargo.toml",
             features=["python"],
             binding=Binding.RustCPython,
         )
     ],
-    packages=["jsonlogic_rs"],
+    packages=["jsonlogic_plus"],
     package_dir={"": "py"},
     include_package_data=True,
     setup_requires=SETUP_REQUIRES,
