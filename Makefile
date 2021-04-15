@@ -4,8 +4,10 @@ SHELL = bash
 
 ifeq ($(WINDOWS),true)
 	VENV=venv/Scripts/python.exe
+	VENV_TARGET=$(VENV)
 else
 	VENV=venv/bin/python
+	VENV_TARGET=venv/bin/activate
 endif
 
 ifeq ($(PYTHON),)
@@ -32,12 +34,12 @@ clean-py:
 	rm -rf dist/*
 
 .PHONY: build-py-sdist
-build-py-sdist: $(VENV) clean-py
+build-py-sdist: $(VENV_TARGET) clean-py
 	cargo clean -p jsonlogic-rs
 	$(VENV) setup.py sdist
 
 .PHONY: build-py-wheel
-build-py-wheel: $(VENV) clean-py
+build-py-wheel: $(VENV_TARGET) clean-py
 	cargo clean -p jsonlogic-rs
 	$(VENV) setup.py bdist_wheel
 
@@ -52,16 +54,16 @@ build-py-wheel-manylinux-no-clean:
 	docker run -v "$$PWD":/io --rm "$(MANYLINUX_IMG)" /io/build-wheels.sh
 
 .PHONY: build-py-all
-build-py-all: $(VENV) clean-py
+build-py-all: $(VENV_TARGET) clean-py
 	cargo clean -p jsonlogic-rs
 	$(VENV) setup.py sdist bdist_wheel
 
 .PHONY: develop-py-wheel
-develop-py-wheel: $(VENV)
+develop-py-wheel: $(VENV_TARGET)
 	$(VENV) setup.py bdist_wheel
 
 .PHONY: develop-py
-develop-py: $(VENV)
+develop-py: $(VENV_TARGET)
 	$(VENV) setup.py develop
 
 .PHONY: distribute-py
@@ -87,13 +89,13 @@ test-wasm:
 	node tests/test_wasm.js
 
 .PHONY: test-py
-test-py: $(VENV)
+test-py: $(VENV_TARGET)
 	$(VENV) tests/test_py.py
 
 # Note: please change both here and in the build-wheels script if specifying a
 # particular version or removing the version pin. setuptools-rust is currently
 # pinned because the windows builds were broken with v0.11.3.
-venv: $(VENV)
-$(VENV): setup.py pyproject.toml
+venv: $(VENV_TARGET)
+$(VENV_TARGET): setup.py pyproject.toml
 	$(PYTHON) -m venv venv
 	$(VENV) -m pip install setuptools wheel setuptools-rust==0.10.6

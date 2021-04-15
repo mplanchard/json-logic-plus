@@ -18,25 +18,31 @@ let
       "rust-src"
       "rust-std"
     ];
+    targets = [ "wasm32-unknown-unknown" ];
   });
 in pkgs.mkShell {
   buildInputs = [
     # Rust and related tools
     rust
     pkgs.rust-analyzer
+    pkgs.wasm-pack
 
     # Needed for dev dependencies
     pkgs.openssl
 
     # For running and testing the python build
-    pkgs.python3Minimal
+    pkgs.python3
 
     # For running and testing the JS build
     pkgs.nodejs-12_x
 
+    # For running make commands
+    pkgs.gnumake
+
     # keep this line if you use bash
     pkgs.bashInteractive
   ];
+
   # Normally rustup provides access to the docs, but a) we're not providing it,
   # since we're installing our rust components manually via the overlay and
   # b) even if we did provide it, it wouldn't know where to find the docs
