@@ -13,6 +13,8 @@ const load_test_json = () => {
     "data",
     "tests.json"
   );
+  console.log(import.meta.url);
+  console.log(data_file);
   let data = readFileSync(data_file);
   return JSON.parse(data);
 };
