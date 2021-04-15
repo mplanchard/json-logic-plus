@@ -85,7 +85,8 @@ pub fn substr(items: &Vec<&Value>) -> Result<Value, Error> {
                     Err(Error::InvalidArgument {
                         value: limit_arg.clone(),
                         operation: "substr".into(),
-                        reason: "Optional third argument to substr must be an integer".into(),
+                        reason: "Optional third argument to substr must be an integer"
+                            .into(),
                     })
                 }
             }
@@ -120,14 +121,15 @@ pub fn substr(items: &Vec<&Value>) -> Result<Value, Error> {
     let end_idx = match limit {
         None => string_len,
         Some(l) => {
-            let limit_abs: usize = l.abs().try_into().map_err(|e| Error::InvalidArgument {
-                value: limit_opt.or(Some(&NULL)).map(|v| v.clone()).unwrap(),
-                operation: "substr".into(),
-                reason: format!(
-                    "The number {} is too large to index strings on this system",
-                    e
-                ),
-            })?;
+            let limit_abs: usize =
+                l.abs().try_into().map_err(|e| Error::InvalidArgument {
+                    value: limit_opt.or(Some(&NULL)).map(|v| v.clone()).unwrap(),
+                    operation: "substr".into(),
+                    reason: format!(
+                        "The number {} is too large to index strings on this system",
+                        e
+                    ),
+                })?;
             match l {
                 // If the limit is negative, it means "characters before the end
                 // at which to stop", corresponding to an index of either 0 or
