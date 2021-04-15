@@ -8,7 +8,7 @@ import { apply } from "../js/index.js";
 
 const load_test_json = () => {
   // import.meta.url will be something like file:<absolute_path>
-  let data_file = join(dirname(import.meta.url), "data/tests.json").split(
+  let data_file = join(dirname(import.meta.url), "data", "tests.json").split(
     ":"
   )[1];
   let data = readFileSync(data_file);
@@ -23,7 +23,7 @@ const print_case = (c, res) => {
 };
 
 const run_tests = (cases) => {
-  const no_comments = cases
+  cases
     .filter((i) => typeof i !== "string")
     .forEach((c) => {
       const logic = c[0];
