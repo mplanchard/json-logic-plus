@@ -1,0 +1,55 @@
+/**
+ * Test the WASM package using node
+ */
+
+import { readFileSync } from "fs";
+import { dirname, join } from "path";
+import { apply } from "../js/index.js";
+
+const load_test_json = () => {
+  // import.meta.url will be something like file:<absolute_path>
+  let data_file = join(dirname(import.meta.url), "data/tests.json").split(
+    ":"
+  )[1];
+  let data = readFileSync(data_file);
+  return JSON.parse(data);
+};
+
+const print_case = (c, res) => {
+  console.log(`  Logic: ${JSON.stringify(c[0])}`);
+  console.log(`  Data: ${JSON.stringify(c[1])}`);
+  console.log(`  Expected: ${JSON.stringify(c[2])}`);
+  console.log(`  Actual: ${res && JSON.stringify(res)}`);
+};
+
+const run_tests = (cases) => {
+  const no_comments = cases
+    .filter((i) => typeof i !== "string")
+    .forEach((c) => {
+      const logic = c[0];
+      const data = c[1];
+      const exp = c[2];
+
+      let res;
+      try {
+        res = apply(logic, data);
+      } catch (e) {
+        console.log("Test errored!");
+        console.log(`  Error: ${e}}`);
+        print_case(c);
+        process.exit(2);
+      }
+
+      if (JSON.stringify(res) !== JSON.stringify(exp)) {
+        console.log("Failed Test!");
+        print_case(c, res);
+        process.exit(1);
+      }
+    });
+};
+
+const main = () => {
+  run_tests(load_test_json());
+};
+
+main();

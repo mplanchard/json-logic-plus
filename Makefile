@@ -22,11 +22,13 @@ build:
 .PHONY: build-wasm
 build-wasm: setup
 	cargo clean -p jsonlogic-rs
-	rm -rf ./js && wasm-pack build --target nodejs --out-dir js --out-name index --release --scope bestow -- --features wasm
+	rm -rf ./js && wasm-pack  build --target bundler --out-dir js --out-name index --release --scope mplanchard -- --features wasm
+	scripts/fixupPackageJson.js
 
 .PHONY: debug-wasm
 debug-wasm:
-	rm -rf ./js && wasm-pack build --target nodejs --out-dir js --out-name index --debug --scope bestow -- --features wasm
+	rm -rf ./js && wasm-pack build --target bundler --out-dir js --out-name index --debug --scope mplanchard -- --features wasm
+	scripts/fixupPackageJson.js
 
 .PHONY: clean-py
 clean-py:
@@ -86,7 +88,7 @@ test:
 
 .PHONY: test-wasm
 test-wasm:
-	node tests/test_wasm.js
+	node --experimental-wasm-modules tests/test_wasm.mjs
 
 .PHONY: test-py
 test-py: $(VENV_TARGET)

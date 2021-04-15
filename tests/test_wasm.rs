@@ -13,7 +13,7 @@ use std::process::Command;
 
 #[cfg(feature = "wasm")]
 #[test]
-fn test_node_pkg() {
+fn test_wasm_pkg() {
     let build_res = Command::new("make")
         .arg("debug-wasm")
         .output()
