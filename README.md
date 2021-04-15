@@ -200,7 +200,7 @@ If you would like to build or test the Python distribution, Python 3.6 or
 newer must be available in your `PATH`. The `venv` module must be part of the
 Python distribution (looking at you, Ubuntu).
 
-If you would like to run tests for the WASM package, `node` 10 or newer must be
+If you would like to run tests for the WASM package, `node` 12.3 or newer must be
 available in your `PATH`.
 
 ### Rust
