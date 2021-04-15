@@ -7,10 +7,12 @@ import { dirname, join } from "path";
 import { apply } from "../js/index.js";
 
 const load_test_json = () => {
-  // import.meta.url will be something like file:<absolute_path>
-  let data_file = join(dirname(import.meta.url), "data", "tests.json").split(
-    ":"
-  )[1];
+  let data_file = join(
+    // import.meta.url will be something like file:<absolute_path>
+    dirname(import.meta.url).split(":")[1],
+    "data",
+    "tests.json"
+  );
   let data = readFileSync(data_file);
   return JSON.parse(data);
 };
