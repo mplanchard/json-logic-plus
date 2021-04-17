@@ -1350,6 +1350,23 @@ mod jsonlogic_tests {
     }
 
     #[test]
+    fn test_add_op() {
+        op::arithmetic::test_arithmetic::add_cases()
+            .iter()
+            .map(|i| {
+                (
+                    json!({"add": i.items}),
+                    json!(null),
+                    match i.exp_err {
+                        true => Err(()),
+                        false => Ok(i.res.clone().unwrap()),
+                    },
+                )
+            })
+            .for_each(assert_jsonlogic)
+    }
+
+    #[test]
     fn test_minus_op() {
         minus_cases().into_iter().for_each(assert_jsonlogic)
     }

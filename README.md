@@ -58,6 +58,31 @@ as the ability to define functions as JsonLogic. We will communicate with
 the broader JsonLogic community to see if we can make them part of the
 standard as we do so.
 
+## Custom Operators
+
+These operators are present ONLY in JsonLogic Plus, not in the original
+implementation.
+
+### add(x: Number, y: Number) -> Number
+
+Add two numbers together.
+
+JSON has no explicit specification for what the maximum number is, but this
+library uses [serde_json], which uses 64-bit numbers to represent parsed JSON.
+We attempt to retain integers as such, but when adding very large or very small
+integers together (i.e. > 2^64 or < -2^63), they will be converted to floats, at
+the potential loss of some precision.
+
+Since `Infinity` and `NaN` cannot be represented in JSON numbers overflow of the
+minimum or maximum 64-bit float results in an overflow error being thrown.
+
+**Possible Errors:**
+
+| Error            | Condition                                        |
+| ---------------- | ------------------------------------------------ |
+| InvalidArgument  | If either argument is not a number               |
+| OverflowBinaryOp | If the addition operation results in an overflow |
+
 ## Usage
 
 ### Rust
@@ -264,3 +289,4 @@ The Rust and Python source are distributed together in a `.tar.gz` file, again
 found in `dist/`.
 
 [jsonlogic]: http://jsonlogic.com/
+[serde_json]: https://docs.serde.rs/serde_json/index.html

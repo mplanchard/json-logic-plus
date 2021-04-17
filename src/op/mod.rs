@@ -18,11 +18,11 @@ use crate::value::to_number_value;
 use crate::value::{Evaluated, Parsed};
 use crate::{js_op, Parser};
 
+pub(crate) mod arithmetic;
 mod array;
 mod data;
 mod impure;
 mod logic;
-mod numeric;
 mod string;
 
 pub const OPERATOR_MAP: phf::Map<&'static str, Operator> = phf_map! {
@@ -64,12 +64,12 @@ pub const OPERATOR_MAP: phf::Map<&'static str, Operator> = phf_map! {
     },
     "<" => Operator {
         symbol: "<",
-        operator: numeric::lt,
+        operator: arithmetic::lt,
         num_params: NumParams::Variadic(2..4),
     },
     "<=" => Operator {
         symbol: "<=",
-        operator: numeric::lte,
+        operator: arithmetic::lte,
         num_params: NumParams::Variadic(2..4),
     },
     // Note: this is actually an _expansion_ on the specification and the
@@ -81,12 +81,12 @@ pub const OPERATOR_MAP: phf::Map<&'static str, Operator> = phf_map! {
     // of least surprise, so we do support those operations.
     ">" => Operator {
         symbol: ">",
-        operator: numeric::gt,
+        operator: arithmetic::gt,
         num_params: NumParams::Variadic(2..4),
     },
     ">=" => Operator {
         symbol: ">=",
-        operator: numeric::gte,
+        operator: arithmetic::gte,
         num_params: NumParams::Variadic(2..4),
     },
     "+" => Operator {
@@ -94,9 +94,14 @@ pub const OPERATOR_MAP: phf::Map<&'static str, Operator> = phf_map! {
         operator: |items| js_op::parse_float_add(items).and_then(to_number_value),
         num_params: NumParams::Any,
     },
+    "add" => Operator {
+        symbol: "add",
+        operator: arithmetic::add,
+        num_params: NumParams::Exactly(2),
+    },
     "-" => Operator {
         symbol: "-",
-        operator: numeric::minus,
+        operator: arithmetic::minus,
         num_params: NumParams::Variadic(1..3),
     },
     "*" => Operator {
