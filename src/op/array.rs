@@ -26,7 +26,7 @@ pub fn map(data: &Value, args: &Vec<&Value>) -> Result<Value, Error> {
         _ => {
             return Err(Error::InvalidArgument {
                 value: args[0].clone(),
-                operation: "map".into(),
+                operation: "map",
                 reason: format!(
                     "First argument to map must evaluate to an array. Got {:?}",
                     evaluated_items
@@ -63,7 +63,7 @@ pub fn filter(data: &Value, args: &Vec<&Value>) -> Result<Value, Error> {
         _ => {
             return Err(Error::InvalidArgument {
                 value: args[0].clone(),
-                operation: "map".into(),
+                operation: "map",
                 reason: format!(
                     "First argument to filter must evaluate to an array. Got {:?}",
                     evaluated_items
@@ -116,7 +116,7 @@ pub fn reduce(data: &Value, args: &Vec<&Value>) -> Result<Value, Error> {
         _ => {
             return Err(Error::InvalidArgument {
                 value: args[0].clone(),
-                operation: "map".into(),
+                operation: "map",
                 reason: format!(
                     "First argument to filter must evaluate to an array. Got {:?}",
                     evaluated_items
@@ -185,7 +185,7 @@ pub fn all(data: &Value, args: &Vec<&Value>) -> Result<Value, Error> {
         _ => {
             return Err(Error::InvalidArgument {
                 value: first_arg.clone(),
-                operation: "all".into(),
+                operation: "all",
                 reason: format!(
                 "First argument to all must evaluate to an array, string, or null, got {}",
                 potentially_evaled_first_arg
@@ -267,7 +267,7 @@ pub fn some(data: &Value, args: &Vec<&Value>) -> Result<Value, Error> {
         _ => {
             return Err(Error::InvalidArgument {
                 value: first_arg.clone(),
-                operation: "all".into(),
+                operation: "all",
                 reason: format!(
                 "First argument must evaluate to an array, a string, or null, got {}",
                 potentially_evaled_first_arg
@@ -369,7 +369,7 @@ pub fn in_(items: &Vec<&Value>) -> Result<Value, Error> {
                     Value::String(needle_string) => needle_string,
                     _ => return Err(Error::InvalidArgument {
                         value: needle.clone(),
-                        operation: "in".into(),
+                        operation: "in",
                         reason:
                             "If second argument is a string, first argument must also be a string."
                                 .into(),
@@ -379,7 +379,7 @@ pub fn in_(items: &Vec<&Value>) -> Result<Value, Error> {
         }
         _ => Err(Error::InvalidArgument {
             value: haystack.clone(),
-            operation: "in".into(),
+            operation: "in",
             reason: "Second argument must be an array or a string".into(),
         }),
     }

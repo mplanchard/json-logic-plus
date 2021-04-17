@@ -436,7 +436,7 @@ pub fn abstract_max(items: &Vec<&Value>) -> Result<f64, Error> {
         .map(|v| {
             to_number(v).ok_or(Error::InvalidArgument {
                 value: (*v).clone(),
-                operation: "max".into(),
+                operation: "max",
                 reason: "Could not convert value to number".into(),
             })
         })
@@ -462,7 +462,7 @@ pub fn abstract_min(items: &Vec<&Value>) -> Result<f64, Error> {
         .map(|v| {
             to_number(v).ok_or(Error::InvalidArgument {
                 value: (*v).clone(),
-                operation: "max".into(),
+                operation: "max",
                 reason: "Could not convert value to number".into(),
             })
         })
@@ -520,7 +520,7 @@ pub fn parse_float_add(vals: &Vec<&Value>) -> Result<f64, Error> {
         .map(|&v| {
             parse_float(v).ok_or(Error::InvalidArgument {
                 value: v.clone(),
-                operation: "+".into(),
+                operation: "+",
                 reason: "Argument could not be converted to a float".into(),
             })
         })
@@ -543,7 +543,7 @@ pub fn parse_float_mul(vals: &Vec<&Value>) -> Result<f64, Error> {
         .map(|&v| {
             parse_float(v).ok_or(Error::InvalidArgument {
                 value: v.clone(),
-                operation: "*".into(),
+                operation: "*",
                 reason: "Argument could not be converted to a float".into(),
             })
         })
@@ -564,15 +564,15 @@ pub fn abstract_minus(first: &Value, second: &Value) -> Result<f64, Error> {
     if let None = first_num {
         return Err(Error::InvalidArgument {
             value: first.clone(),
-            operation: "-".into(),
-            reason: "Could not convert value to number.".into(),
+            operation: "-",
+            reason: "Could not convert value to number".into(),
         });
     }
     if let None = second_num {
         return Err(Error::InvalidArgument {
             value: second.clone(),
-            operation: "-".into(),
-            reason: "Could not convert value to number.".into(),
+            operation: "-",
+            reason: "Could not convert value to number".into(),
         });
     }
 
@@ -587,15 +587,15 @@ pub fn abstract_div(first: &Value, second: &Value) -> Result<f64, Error> {
     if let None = first_num {
         return Err(Error::InvalidArgument {
             value: first.clone(),
-            operation: "/".into(),
-            reason: "Could not convert value to number.".into(),
+            operation: "/",
+            reason: "Could not convert value to number".into(),
         });
     }
     if let None = second_num {
         return Err(Error::InvalidArgument {
             value: second.clone(),
-            operation: "/".into(),
-            reason: "Could not convert value to number.".into(),
+            operation: "/",
+            reason: "Could not convert value to number".into(),
         });
     }
 
@@ -610,15 +610,15 @@ pub fn abstract_mod(first: &Value, second: &Value) -> Result<f64, Error> {
     if let None = first_num {
         return Err(Error::InvalidArgument {
             value: first.clone(),
-            operation: "%".into(),
-            reason: "Could not convert value to number.".into(),
+            operation: "%",
+            reason: "Could not convert value to number".into(),
         });
     }
     if let None = second_num {
         return Err(Error::InvalidArgument {
             value: second.clone(),
-            operation: "%".into(),
-            reason: "Could not convert value to number.".into(),
+            operation: "%",
+            reason: "Could not convert value to number".into(),
         });
     }
 
@@ -631,7 +631,7 @@ pub fn to_negative(val: &Value) -> Result<f64, Error> {
         .map(|v| -1.0 * v)
         .ok_or(Error::InvalidArgument {
             value: val.clone(),
-            operation: "to_negative".into(),
+            operation: "to_negative",
             reason: "Could not convert value to a number".into(),
         })
 }

@@ -7,6 +7,7 @@ use crate::op::NumParams;
 
 /// Public error enumeration
 #[derive(thiserror::Error, Debug)]
+#[non_exhaustive]
 pub enum Error {
     #[error("Invalid data - value: {value:?}, reason: {reason:?}")]
     InvalidData { value: Value, reason: String },
@@ -23,7 +24,7 @@ pub enum Error {
     #[error("Invalid argument for '{operation}' - '{value:?}', reason: {reason}")]
     InvalidArgument {
         value: Value,
-        operation: String,
+        operation: &'static str,
         reason: String,
     },
 

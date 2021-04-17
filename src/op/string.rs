@@ -51,7 +51,7 @@ pub fn substr(items: &Vec<&Value>) -> Result<Value, Error> {
         _ => {
             return Err(Error::InvalidArgument {
                 value: string_arg.clone(),
-                operation: "substr".into(),
+                operation: "substr",
                 reason: "First argument to substr must be a string".into(),
             })
         }
@@ -63,7 +63,7 @@ pub fn substr(items: &Vec<&Value>) -> Result<Value, Error> {
             } else {
                 return Err(Error::InvalidArgument {
                     value: idx_arg.clone(),
-                    operation: "substr".into(),
+                    operation: "substr",
                     reason: "Second argument to substr must be an integer".into(),
                 });
             }
@@ -71,7 +71,7 @@ pub fn substr(items: &Vec<&Value>) -> Result<Value, Error> {
         _ => {
             return Err(Error::InvalidArgument {
                 value: idx_arg.clone(),
-                operation: "substr".into(),
+                operation: "substr",
                 reason: "Second argument to substr must be a number".into(),
             })
         }
@@ -84,7 +84,7 @@ pub fn substr(items: &Vec<&Value>) -> Result<Value, Error> {
                 } else {
                     Err(Error::InvalidArgument {
                         value: limit_arg.clone(),
-                        operation: "substr".into(),
+                        operation: "substr",
                         reason: "Optional third argument to substr must be an integer"
                             .into(),
                     })
@@ -92,7 +92,7 @@ pub fn substr(items: &Vec<&Value>) -> Result<Value, Error> {
             }
             _ => Err(Error::InvalidArgument {
                 value: limit_arg.clone(),
-                operation: "substr".into(),
+                operation: "substr",
                 reason: "Optional third argument to substr must be a number".into(),
             }),
         })
@@ -102,7 +102,7 @@ pub fn substr(items: &Vec<&Value>) -> Result<Value, Error> {
 
     let idx_abs: usize = idx.abs().try_into().map_err(|e| Error::InvalidArgument {
         value: idx_arg.clone(),
-        operation: "substr".into(),
+        operation: "substr",
         reason: format!(
             "The number {} is too large to index strings on this system",
             e
@@ -124,7 +124,7 @@ pub fn substr(items: &Vec<&Value>) -> Result<Value, Error> {
             let limit_abs: usize =
                 l.abs().try_into().map_err(|e| Error::InvalidArgument {
                     value: limit_opt.or(Some(&NULL)).map(|v| v.clone()).unwrap(),
-                    operation: "substr".into(),
+                    operation: "substr",
                     reason: format!(
                         "The number {} is too large to index strings on this system",
                         e
