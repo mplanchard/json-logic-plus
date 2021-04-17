@@ -8,10 +8,10 @@ import { apply } from "../js/index.js";
 
 const load_test_json = () => {
   let data_file = join(
-    // import.meta.url will be something like file:<absolute_path>
+    // import.meta.url will be something like file://<absolute_path>
     // we're not just splitting on the colon b/c file paths on windows contain
     // a colon after the drive letter, so we need to retain the absolute path
-    dirname(import.meta.url).split("file:")[1],
+    dirname(import.meta.url).split("file://")[1],
     "data",
     "tests.json"
   );
