@@ -7,15 +7,26 @@ import { dirname, join } from "path";
 import { apply } from "../js/index.js";
 
 const load_test_json = () => {
-  let data_file = join(
-    // import.meta.url will be something like file://<absolute_path>
-    // we're not just splitting on the colon b/c file paths on windows contain
-    // a colon after the drive letter, so we need to retain the absolute path
-    dirname(import.meta.url).split("file://")[1],
-    "data",
-    "tests.json"
-  );
-  let data = readFileSync(data_file);
+  const file_path = import.meta.url;
+
+  let data_file;
+  // Hack for windows CI
+  if (file_path.search(/[A-Z]:/) != -1) {
+    data_file = join(
+      // import.meta.url will be something like file:///D:/whatever for some reason
+      dirname(import.meta.url).split("file:///")[1],
+      "data",
+      "tests.json"
+    );
+  } else {
+    data_file = join(
+      // import.meta.url will be something like file://<absolute_path>
+      dirname(import.meta.url).split("file://")[1],
+      "data",
+      "tests.json"
+    );
+  }
+  const data = readFileSync(data_file);
   return JSON.parse(data);
 };
 
