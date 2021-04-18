@@ -12,6 +12,9 @@ pub enum Error {
     #[error("Invalid data - value: {value:?}, reason: {reason:?}")]
     InvalidData { value: Value, reason: String },
 
+    #[error("Invalid identifier '{0}': identifiers must be valid utf-8 of 2 or more characters, containing no whitespace")]
+    InvalidIdentifier(String),
+
     #[error("Invalid rule - operator: '{key:?}', reason: {reason:?}")]
     InvalidOperation { key: String, reason: String },
 

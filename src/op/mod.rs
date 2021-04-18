@@ -245,6 +245,7 @@ pub const LAZY_OPERATOR_MAP: phf::Map<&'static str, LazyOperator> = phf_map! {
     },
 };
 
+/// The number of parameters an operator takes
 #[derive(Debug, Clone)]
 pub enum NumParams {
     None,
@@ -255,6 +256,8 @@ pub enum NumParams {
     Variadic(std::ops::Range<usize>), // [inclusive, exclusive)
 }
 impl NumParams {
+    /// Return whether a given length matches the number of parameters specified
+    /// by this NumParams.
     fn is_valid_len(&self, len: &usize) -> bool {
         match self {
             Self::None => len == &0,
@@ -265,6 +268,8 @@ impl NumParams {
             Self::Variadic(range) => range.contains(len),
         }
     }
+    /// Check whether a length matches the number of parameters specified by this
+    /// NuMParams and return an error if it does not match.
     fn check_len<'a>(&self, len: &'a usize) -> Result<&'a usize, Error> {
         match self.is_valid_len(len) {
             true => Ok(len),
@@ -274,6 +279,10 @@ impl NumParams {
             }),
         }
     }
+    /// Return whether this NumParams is satisfied by a single argument.
+    ///
+    /// Useful because of the JsonLogic shortcut of treating a single value
+    /// associated with a key as being equivalent to a single-item array.
     fn can_accept_unary(&self) -> bool {
         match self {
             Self::None => false,
@@ -286,10 +295,12 @@ impl NumParams {
     }
 }
 
-trait CommonOperator {
+/// Common requirements for an operator
+pub(crate) trait CommonOperator {
     fn param_info(&self) -> &NumParams;
 }
 
+/// A JsonLogic operator
 pub struct Operator {
     symbol: &'static str,
     operator: OperatorFn,
@@ -314,6 +325,7 @@ impl fmt::Debug for Operator {
     }
 }
 
+/// A JsonLogic operator whoe evaluation of its components is delayed until needed.
 pub struct LazyOperator {
     symbol: &'static str,
     operator: LazyOperatorFn,

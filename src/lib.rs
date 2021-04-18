@@ -3,6 +3,7 @@ use serde_json::Value;
 
 mod error;
 // TODO consider whether this should be public; move doctests if so
+pub(crate) mod func;
 pub mod js_op;
 mod op;
 mod value;
