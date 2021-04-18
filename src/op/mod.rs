@@ -21,11 +21,22 @@ use crate::{js_op, Parser};
 pub(crate) mod arithmetic;
 mod array;
 mod data;
+pub(crate) mod equality;
 mod impure;
 mod logic;
 mod string;
 
 pub const OPERATOR_MAP: phf::Map<&'static str, Operator> = phf_map! {
+    "eq" => Operator {
+        symbol: "eq",
+        operator: equality::equal,
+        num_params: NumParams::Exactly(2),
+    },
+    "ne" => Operator {
+        symbol: "ne",
+        operator: equality::not_equal,
+        num_params: NumParams::Exactly(2),
+    },
     "==" => Operator {
         symbol: "==",
         operator: |items| Ok(Value::Bool(js_op::abstract_eq(items[0], items[1]))),

@@ -1205,6 +1205,32 @@ mod jsonlogic_tests {
     }
 
     #[test]
+    fn test_eq() {
+        op::equality::test_equality_operators::eq_cases()
+            .into_iter()
+            .for_each(|(first, second, exp)| {
+                assert_jsonlogic((json!({"eq": [first, second]}), json!(null), Ok(exp)))
+            })
+    }
+
+    #[test]
+    fn test_ne() {
+        op::equality::test_equality_operators::eq_cases()
+            .into_iter()
+            .for_each(|(first, second, exp)| {
+                if let Value::Bool(exp) = exp {
+                    assert_jsonlogic((
+                        json!({"ne": [first, second]}),
+                        json!(null),
+                        Ok(Value::Bool(!exp)),
+                    ));
+                } else {
+                    assert!(false);
+                }
+            })
+    }
+
+    #[test]
     fn test_abstract_eq_op() {
         abstract_eq_cases().into_iter().for_each(assert_jsonlogic)
     }
