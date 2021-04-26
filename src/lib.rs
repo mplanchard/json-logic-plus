@@ -4,6 +4,7 @@ use serde_json::Value;
 mod error;
 // TODO consider whether this should be public; move doctests if so
 pub mod js_op;
+mod namespace;
 mod op;
 mod value;
 

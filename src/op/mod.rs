@@ -22,6 +22,7 @@ pub(crate) mod arithmetic;
 mod array;
 mod data;
 pub(crate) mod equality;
+pub(crate) mod func;
 mod impure;
 mod logic;
 mod string;
@@ -502,6 +503,7 @@ struct OpArgs<'a, 'b, T> {
     args: Vec<&'b Value>,
 }
 
+/// Attempt to parse an operator from a Json value
 fn op_from_map<'a, 'b, T: CommonOperator>(
     map: &'a phf::Map<&'static str, T>,
     value: &'b Value,
