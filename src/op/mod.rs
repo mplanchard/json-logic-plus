@@ -22,6 +22,7 @@ pub(crate) mod arithmetic;
 mod array;
 mod data;
 pub(crate) mod equality;
+pub(crate) mod func;
 mod impure;
 mod logic;
 mod string;

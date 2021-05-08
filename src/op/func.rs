@@ -1,4 +1,4 @@
-//! FUnctions
+//! FUNctions
 
 use serde_json::Value;
 
