@@ -52,6 +52,9 @@ version = "~1.0.31"
 optional = true
 version = "~2.33.1"
 
+[dev-dependencies]
+lazy_static = "~1.4.0"
+
 [dev-dependencies.reqwest]
 features = ["blocking"]
 version = "~0.10.6"

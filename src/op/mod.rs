@@ -247,7 +247,7 @@ pub const LAZY_OPERATOR_MAP: phf::Map<&'static str, LazyOperator> = phf_map! {
 };
 
 /// The number of parameters an operator takes
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum NumParams {
     None,
     Any,

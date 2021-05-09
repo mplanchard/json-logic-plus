@@ -90,6 +90,20 @@ pub fn apply(value: &Value, data: &Value) -> Result<Value, Error> {
 }
 
 #[cfg(test)]
+pub mod test_common {
+
+    /// Common json expressions for testing
+    pub mod json_exp {
+        use lazy_static::lazy_static;
+        use serde_json::{json, Value};
+
+        lazy_static! {
+            pub static ref ADD_TWO: Value = json!({"+": [1, 1]});
+        }
+    }
+}
+
+#[cfg(test)]
 mod jsonlogic_tests {
     use super::*;
     use serde_json::json;

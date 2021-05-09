@@ -43,3 +43,19 @@ pub enum Error {
     #[error("Wrong argument count - expected: {expected:?}, actual: {actual:?}")]
     WrongArgumentCount { expected: NumParams, actual: usize },
 }
+impl Error {
+    pub(crate) fn invalid_argument<S: Into<String>>(
+        value: Value,
+        operation: &'static str,
+        reason: S,
+    ) -> Self {
+        Self::InvalidArgument {
+            value,
+            operation,
+            reason: reason.into(),
+        }
+    }
+    pub(crate) fn wrong_argument_count(expected: NumParams, actual: usize) -> Self {
+        Self::WrongArgumentCount { expected, actual }
+    }
+}
